@@ -1242,6 +1242,53 @@
 
     .restart-wrap { text-align: center; padding-bottom: 60px; }
 
+    /* ── LEAD CAPTURE FORM ── */
+    .lead-card {
+      background: linear-gradient(135deg, #0F172A 0%, #132035 100%);
+      border: 1.5px solid rgba(34,197,94,0.35);
+      border-radius: 16px;
+      padding: 28px 24px;
+      margin-bottom: 16px;
+    }
+    .lead-card .lead-eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: #22C55E; margin-bottom: 10px;
+    }
+    .lead-card h3 {
+      font-size: 19px; font-weight: 800; color: #F1F5F9; margin-bottom: 8px; line-height: 1.3;
+    }
+    .lead-card p {
+      font-size: 14px; color: #94A3B8; margin-bottom: 20px; line-height: 1.6;
+    }
+    .lead-form { display: flex; flex-direction: column; gap: 10px; }
+    .lead-form input {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px; padding: 12px 16px;
+      font-size: 14px; color: #F1F5F9; font-family: inherit;
+      outline: none; transition: border-color .2s;
+    }
+    .lead-form input::placeholder { color: #64748B; }
+    .lead-form input:focus { border-color: #22C55E; }
+    .lead-form-row { display: flex; gap: 10px; }
+    .lead-form-row input { flex: 1; }
+    .lead-submit {
+      background: #22C55E; color: #0F172A; border: none;
+      border-radius: 10px; padding: 13px 20px;
+      font-size: 14px; font-weight: 800; cursor: pointer;
+      transition: background .2s, transform .1s;
+      white-space: nowrap;
+    }
+    .lead-submit:hover { background: #16A34A; transform: translateY(-1px); }
+    .lead-submit:disabled { background: #4B5563; cursor: not-allowed; transform: none; }
+    .lead-success {
+      display: none; text-align: center; padding: 16px 0 4px;
+      color: #22C55E; font-size: 15px; font-weight: 700;
+    }
+    .lead-success span { font-size: 28px; display: block; margin-bottom: 6px; }
+    .lead-privacy {
+      font-size: 11px; color: #475569; margin-top: 6px;
+    }
+
     /* ── TOP ACCIONES POR IMPACTO ── */
     .top-actions-card {
       background: var(--navy); border-radius: 16px;
@@ -2474,6 +2521,28 @@
     </div>
 
 
+    <!-- ── LEAD CAPTURE ── -->
+    <div class="lead-card" id="lead-card">
+      <p class="lead-eyebrow">¿Quieres mejorar este score?</p>
+      <h3>Te ayudo a que la IA te encuentre.</h3>
+      <p>Estrategia de contenido y fichas de producto optimizadas para que aparezcas en ChatGPT, Perplexity y Google. Sin humo — con lógica de negocio.</p>
+      <form class="lead-form" id="lead-form" onsubmit="submitLead(event)">
+        <div class="lead-form-row">
+          <input type="text" name="nombre" placeholder="Tu nombre" required autocomplete="name">
+          <input type="email" name="email" placeholder="tu@email.com" required autocomplete="email">
+        </div>
+        <input type="hidden" name="web" id="lead-web" value="">
+        <input type="hidden" name="score" id="lead-score" value="">
+        <input type="hidden" name="_subject" value="Nuevo contacto desde AuditIA">
+        <button type="submit" class="lead-submit" id="lead-submit-btn">Quiero mejorar mi visibilidad →</button>
+        <p class="lead-privacy">Sin spam. Te contacto en 48h. Puedes cancelar cuando quieras.</p>
+      </form>
+      <div class="lead-success" id="lead-success">
+        <span>✓</span>
+        Recibido. Te escribo en menos de 48 horas.
+      </div>
+    </div>
+
     <div class="restart-wrap">
       <button class="btn btn-secondary" onclick="restart()">↺ Nueva auditoría</button>
     </div>
@@ -3424,6 +3493,15 @@ function renderAiResults(data) {
   document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${shareText}${encodeURIComponent(shareUrl)}`;
   document.getElementById('share-whatsapp').href = `https://api.whatsapp.com/send?text=${shareText}${encodeURIComponent(shareUrl)}`;
 
+  // Lead form — pre-fill hidden fields
+  document.getElementById('lead-web').value = storeUrl || '';
+  document.getElementById('lead-score').value = total + '/24 (' + level + ')';
+  // Reset form state each time results are shown
+  document.getElementById('lead-form').style.display = 'flex';
+  document.getElementById('lead-success').style.display = 'none';
+  document.getElementById('lead-submit-btn').disabled = false;
+  document.getElementById('lead-submit-btn').textContent = 'Quiero mejorar mi visibilidad →';
+
 }
 
 function copyLink() {
@@ -3433,6 +3511,44 @@ function copyLink() {
 }
 
 function scrollToBlock() {}
+
+async function submitLead(e) {
+  e.preventDefault();
+  const btn = document.getElementById('lead-submit-btn');
+  const form = document.getElementById('lead-form');
+  const success = document.getElementById('lead-success');
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  const data = {
+    nombre: form.nombre.value.trim(),
+    email: form.email.value.trim(),
+    web: form.web.value,
+    score: form.score.value,
+  };
+
+  try {
+    const res = await fetch(API_BASE + '/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error('Error ' + res.status);
+    form.style.display = 'none';
+    success.style.display = 'block';
+  } catch (err) {
+    // Fallback: si el endpoint falla, mostramos igualmente éxito
+    // y abrimos un mailto como respaldo
+    form.style.display = 'none';
+    success.style.display = 'block';
+    const subject = encodeURIComponent('Quiero mejorar mi visibilidad en IA — ' + data.web);
+    const body = encodeURIComponent('Nombre: ' + data.nombre + '\nEmail: ' + data.email + '\nWeb: ' + data.web + '\nScore: ' + data.score);
+    setTimeout(() => {
+      window.location.href = 'mailto:elisabethgt.marketing@gmail.com?subject=' + subject + '&body=' + body;
+    }, 800);
+  }
+}
 
 // ═══════════════════════════════════════════════
 // HERO ANIMATIONS
