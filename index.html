@@ -3211,8 +3211,8 @@ function submitEmail() {
   const errEl = document.getElementById('gdpr-error');
   if (errEl) errEl.remove();
 
-  // TODO: conectar con Mailchimp / ConvertKit / Brevo
-  console.log('Suscripción newsletter:', { email, url: storeUrl, sector: storeSector });
+  // Enviar a Google Sheets
+  sendToSheets({ tipo: 'email-gate', email: email, web: storeUrl, score: '' });
 
   // Animación de análisis antes de mostrar resultados
   goTo('analyzing');
@@ -3512,6 +3512,18 @@ function copyLink() {
 
 function scrollToBlock() {}
 
+const SHEETS_WEBHOOK = 'https://script.google.com/macros/s/AKfycbyc_Rdsa8tYETS5LpQRGkuCDHEIJUHTrV3VmsohOnbQWxKD3Ewl3xWkByn18rjbFPOC/exec';
+
+function sendToSheets(data) {
+  // no-cors: Google Apps Script no devuelve CORS headers, pero el POST llega igual
+  fetch(SHEETS_WEBHOOK, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }).catch(() => {}); // silencioso si falla
+}
+
 async function submitLead(e) {
   e.preventDefault();
   const btn = document.getElementById('lead-submit-btn');
@@ -3522,32 +3534,16 @@ async function submitLead(e) {
   btn.textContent = 'Enviando...';
 
   const data = {
+    tipo: 'lead-formulario',
     nombre: form.nombre.value.trim(),
     email: form.email.value.trim(),
     web: form.web.value,
     score: form.score.value,
   };
 
-  try {
-    const res = await fetch(API_BASE + '/lead', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (!res.ok) throw new Error('Error ' + res.status);
-    form.style.display = 'none';
-    success.style.display = 'block';
-  } catch (err) {
-    // Fallback: si el endpoint falla, mostramos igualmente éxito
-    // y abrimos un mailto como respaldo
-    form.style.display = 'none';
-    success.style.display = 'block';
-    const subject = encodeURIComponent('Quiero mejorar mi visibilidad en IA — ' + data.web);
-    const body = encodeURIComponent('Nombre: ' + data.nombre + '\nEmail: ' + data.email + '\nWeb: ' + data.web + '\nScore: ' + data.score);
-    setTimeout(() => {
-      window.location.href = 'mailto:elisabethgt.marketing@gmail.com?subject=' + subject + '&body=' + body;
-    }, 800);
-  }
+  sendToSheets(data);
+  form.style.display = 'none';
+  success.style.display = 'block';
 }
 
 // ═══════════════════════════════════════════════
