@@ -62,6 +62,7 @@
       background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%);
       padding: 28px 32px 24px; text-align: center; position: relative; overflow: hidden;
     }
+    .hero-inner { max-width: 700px; margin: 0 auto; position: relative; z-index: 1; }
     .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 70% 50%, rgba(34,197,94,0.12) 0%, transparent 60%); pointer-events:none; }
     .hero-tag { display:inline-flex; align-items:center; gap:6px; background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.3); color:var(--green); font-size:12px; font-weight:600; padding:5px 14px; border-radius:20px; margin-bottom:18px; }
     .hero-tag::before { content:'●'; font-size:7px; animation:blink 1.5s infinite; }
@@ -182,10 +183,12 @@
 </nav>
 
 <div class="hero">
-  <div class="hero-tag">Modelo de Negocio</div>
-  <h1>Business Model Canvas<br><span>AuditIA</span></h1>
-  <p>Plataforma de Inteligencia Predictiva de Visibilidad en IA Generativa</p>
-  <div class="hero-meta">E. Gómez Torres · Cámara de Comercio de Madrid · Junio 2026</div>
+  <div class="hero-inner">
+    <div class="hero-tag">Modelo de Negocio</div>
+    <h1>Business Model Canvas<br><span>AuditIA</span></h1>
+    <p>Plataforma de Inteligencia Predictiva de Visibilidad en IA Generativa</p>
+    <div class="hero-meta">E. Gómez Torres · Cámara de Comercio de Madrid · Junio 2026</div>
+  </div>
 </div>
 
 <div class="stats-wrap">
