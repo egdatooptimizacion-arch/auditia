@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El mapa del funnel invisible — Sin guión</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:   #0A0A0A;
+    --brown1:  #4A3B3A;
+    --brown2:  #2a1f1e;
+    --accent:  #857371;
+    --green:   #22C55E;
+    --white:   #ffffff;
+    --grey:    #999999;
+    --muted:   rgba(255,255,255,0.35);
+    --card-bg: rgba(255,255,255,0.04);
+    --border:  rgba(255,255,255,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* noise texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 60px 32px 100px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 52px;
+  }
+
+  .header .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 18px;
+  }
+
+  .header .intro {
+    color: var(--grey);
+    font-size: 15px;
+    max-width: 520px;
+    margin: 0 auto 28px;
+  }
+
+  .print-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 10px 24px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all .2s;
+  }
+  .print-btn:hover { background: var(--accent); color: var(--black); }
+  .print-btn svg { width: 14px; height: 14px; }
+
+  /* ── SECTION TITLE ── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+
+  /* ── PHASES ── */
+  .phases {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 52px;
+  }
+
+  .phase {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px 28px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .phase::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--phase-color);
+  }
+
+  .phase-1 { --phase-color: #22C55E; }
+  .phase-2 { --phase-color: #EAB308; }
+  .phase-3 { --phase-color: #F97316; }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .phase-icon {
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  .phase-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    color: var(--black);
+    background: var(--phase-color);
+  }
+
+  .phase h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 1.35rem;
+    font-weight: 900;
+    margin-bottom: 6px;
+    color: var(--white);
+  }
+
+  .phase .phase-desc {
+    color: var(--grey);
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+
+  .phase-question {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 10px;
+  }
+
+  /* ── WRITE AREAS ── */
+  .writeline {
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    background: transparent;
+    width: 100%;
+    padding: 10px 2px;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: block;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .writeline:focus { border-bottom-color: var(--accent); }
+  .writeline::placeholder { color: rgba(255,255,255,0.18); font-style: italic; }
+
+  /* ── TABLE ── */
+  .table-section {
+    margin-bottom: 52px;
+  }
+
+  .table-section h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+  }
+
+  .table-section .table-intro {
+    color: var(--grey);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .inv-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .inv-table th {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(133,115,113,0.06);
+  }
+
+  .inv-table td {
+    padding: 0;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .inv-table td input {
+    background: transparent;
+    border: none;
+    width: 100%;
+    padding: 12px 12px;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+  }
+  .inv-table td input::placeholder { color: rgba(255,255,255,0.18); font-style: italic; }
+  .inv-table td input:focus { background: rgba(255,255,255,0.03); }
+
+  .inv-table tr:last-child td { border-bottom: none; }
+
+  .add-row-btn {
+    margin-top: 12px;
+    background: transparent;
+    border: 1px dashed rgba(255,255,255,0.15);
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    padding: 8px 16px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: all .2s;
+  }
+  .add-row-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── REFLECTION ── */
+  .reflection {
+    margin-bottom: 52px;
+  }
+
+  .reflection h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+  }
+
+  .reflection .refl-intro {
+    color: var(--grey);
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+
+  .refl-item {
+    margin-bottom: 24px;
+    padding: 20px 22px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .refl-q {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 14px;
+  }
+
+  textarea.write-area {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    width: 100%;
+    padding: 8px 2px;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    display: block;
+    min-height: 56px;
+    transition: border-color .2s;
+    line-height: 1.7;
+  }
+  textarea.write-area:focus { border-bottom-color: var(--accent); }
+  textarea.write-area::placeholder { color: rgba(255,255,255,0.18); font-style: italic; }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-top: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--accent);
+  }
+
+  .footer-link {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .footer-link:hover { color: var(--white); }
+
+  .footer-note {
+    width: 100%;
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+    text-align: center;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: #fff; color: #111; }
+    body::before { display: none; }
+
+    .wrap { padding: 20px 20px 40px; max-width: 100%; }
+
+    .print-btn { display: none; }
+    .add-row-btn { display: none; }
+
+    .header { border-bottom: 1px solid #ddd; }
+    .header .label { color: #857371; }
+    .header h1 { color: #111; font-size: 2.2rem; }
+    .header .intro { color: #555; }
+
+    .section-label { color: #999; }
+
+    .phase {
+      background: #f9f8f7;
+      border: 1px solid #ddd;
+      break-inside: avoid;
+    }
+    .phase::before { background: var(--phase-color); }
+    .phase h2 { color: #111; }
+    .phase .phase-desc { color: #666; }
+    .phase-question { color: #333; }
+    .phase-tag { color: #fff; }
+
+    .writeline {
+      color: #111;
+      border-bottom: 1px solid #ccc;
+    }
+    .writeline::placeholder { color: #ccc; }
+
+    .inv-table th { color: #857371; background: #f5f3f2; }
+    .inv-table td input { color: #111; }
+    .inv-table td { border-bottom: 1px solid #e5e5e5; }
+
+    .refl-item { background: #f9f8f7; border: 1px solid #ddd; break-inside: avoid; }
+    .refl-q { color: #222; }
+    textarea.write-area { color: #111; border-bottom: 1px solid #ccc; }
+
+    .table-section h3,
+    .reflection h3 { color: #111; }
+    .table-section .table-intro,
+    .reflection .refl-intro { color: #666; }
+
+    .footer { border-top: 1px solid #ddd; }
+    .footer-brand { color: #857371; }
+    .footer-link { color: #999; }
+    .footer-note { color: #bbb; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="label">Sin guión · Plantilla de trabajo</div>
+    <h1>El mapa del funnel invisible</h1>
+    <p class="intro">Identifica si una empresa ya te tiene enganchada, y cuándo llegará la factura.</p>
+    <button class="print-btn" onclick="window.print()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Guardar como PDF
+    </button>
+  </div>
+
+  <!-- FASES -->
+  <div class="section-label">Las tres fases del funnel</div>
+
+  <div class="phases">
+
+    <!-- FASE 1 -->
+    <div class="phase phase-1">
+      <div class="phase-header">
+        <span class="phase-icon">🎁</span>
+        <span class="phase-tag">Fase 1</span>
+      </div>
+      <h2>Te lo regalaron</h2>
+      <p class="phase-desc">El servicio era gratis. Fácil. Sin fricción. Aprendiste que así son las cosas.</p>
+
+      <p class="phase-question">¿Qué servicios usas gratis ahora mismo?</p>
+      <input type="text" class="writeline" placeholder="ej. devoluciones, envíos, cuenta bancaria, streaming con anuncios...">
+      <input type="text" class="writeline" placeholder="">
+      <input type="text" class="writeline" placeholder="">
+    </div>
+
+    <!-- FASE 2 -->
+    <div class="phase phase-2">
+      <div class="phase-header">
+        <span class="phase-icon">🧠</span>
+        <span class="phase-tag">Fase 2</span>
+      </div>
+      <h2>Se convirtió en hábito</h2>
+      <p class="phase-desc">Ya no lo piensas. Lo usas de forma automática. Tu comportamiento cambió sin que te dieras cuenta.</p>
+
+      <p class="phase-question">¿Cuándo fue la última vez que usaste ese servicio?</p>
+      <input type="text" class="writeline" placeholder="ej. esta semana, ayer, hace tres días...">
+      <input type="text" class="writeline" placeholder="">
+
+      <p class="phase-question" style="margin-top:16px">¿Qué pasaría si mañana dejara de existir?</p>
+      <input type="text" class="writeline" placeholder="sé honesta aquí...">
+      <input type="text" class="writeline" placeholder="">
+    </div>
+
+    <!-- FASE 3 -->
+    <div class="phase phase-3">
+      <div class="phase-header">
+        <span class="phase-icon">💸</span>
+        <span class="phase-tag">Fase 3</span>
+      </div>
+      <h2>Llegó la factura</h2>
+      <p class="phase-desc">El servicio ya no es gratis. Tú ya no puedes imaginar no tenerlo. Esa es exactamente la situación que buscaban.</p>
+
+      <p class="phase-question">¿Cuánto pagarías antes de cancelar?</p>
+      <input type="text" class="writeline" placeholder="ej. hasta 5 euros al mes, no sé, lo que fuera necesario...">
+      <input type="text" class="writeline" placeholder="">
+
+      <p class="phase-question" style="margin-top:16px">¿Cuándo crees que van a cobrarte?</p>
+      <input type="text" class="writeline" placeholder="¿ya te avisaron? ¿lo intuyes? ¿ya te está pasando?">
+    </div>
+
+  </div>
+
+  <!-- INVENTARIO -->
+  <div class="table-section">
+    <h3>Tu inventario de hábitos comprados</h3>
+    <p class="table-intro">Escribe los servicios que usas sin pensar en el coste. Luego evalúa cada uno.</p>
+
+    <table class="inv-table" id="inv-table">
+      <thead>
+        <tr>
+          <th style="width:30%">Servicio</th>
+          <th style="width:22%">¿Desde cuándo?</th>
+          <th style="width:24%">¿Cuánto pagarías?</th>
+          <th style="width:24%">¿Te importaría perderlo?</th>
+        </tr>
+      </thead>
+      <tbody id="inv-body">
+        <tr>
+          <td><input type="text" placeholder="nombre del servicio"></td>
+          <td><input type="text" placeholder="hace años / meses..."></td>
+          <td><input type="text" placeholder="€"></td>
+          <td><input type="text" placeholder="sí / no / mucho"></td>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder=""></td>
+          <td><input type="text" placeholder=""></td>
+          <td><input type="text" placeholder=""></td>
+          <td><input type="text" placeholder=""></td>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder=""></td>
+          <td><input type="text" placeholder=""></td>
+          <td><input type="text" placeholder=""></td>
+          <td><input type="text" placeholder=""></td>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder=""></td>
+          <td><input type="text" placeholder=""></td>
+          <td><input type="text" placeholder=""></td>
+          <td><input type="text" placeholder=""></td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="add-row-btn" onclick="addRow()">+ Añadir fila</button>
+  </div>
+
+  <!-- REFLEXIÓN -->
+  <div class="reflection">
+    <h3>Tres preguntas para pensar</h3>
+    <p class="refl-intro">No hay respuestas correctas. Solo observación.</p>
+
+    <div class="refl-item">
+      <p class="refl-q">¿Hay algún servicio en tu lista del que podrías prescindir pero no lo haces? ¿Por qué?</p>
+      <textarea class="write-area" rows="2" placeholder="Escribe lo que se te ocurra..."></textarea>
+    </div>
+
+    <div class="refl-item">
+      <p class="refl-q">¿Recuerdas el momento en que algo "gratis" se convirtió en algo que dabas por hecho?</p>
+      <textarea class="write-area" rows="2" placeholder="Puede ser un recuerdo concreto o una sensación..."></textarea>
+    </div>
+
+    <div class="refl-item">
+      <p class="refl-q">Si tú vendieras un servicio, ¿qué darías gratis primero para que alguien creara el hábito?</p>
+      <textarea class="write-area" rows="2" placeholder="Piénsalo desde tu propio negocio o proyecto..."></textarea>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">Sin guión</div>
+    <a href="https://singuion.substack.com" target="_blank" class="footer-link">singuion.substack.com</a>
+    <p class="footer-note">Plantilla creada a partir del número #4 de Sin guión · Elisabeth Gómez Torres · 2026</p>
+  </div>
+
+</div>
+
+<script>
+  function addRow() {
+    const tbody = document.getElementById('inv-body');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" placeholder=""></td>
+      <td><input type="text" placeholder=""></td>
+      <td><input type="text" placeholder=""></td>
+      <td><input type="text" placeholder=""></td>
+    `;
+    tbody.appendChild(tr);
+  }
+</script>
+</body>
+</html>
