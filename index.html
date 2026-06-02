@@ -85,7 +85,7 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: var(--bg);
+      background: #0F172A;
       min-height: 100vh;
       color: var(--text);
       line-height: 1.6;
@@ -94,7 +94,7 @@
     /* ── TOPBAR EG ── */
     .eg-topbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 999;
-      background: rgba(26,50,96,0.96);
+      background: rgba(15,23,42,0.97);
       border-bottom: 1px solid rgba(255,255,255,0.09);
       backdrop-filter: blur(12px);
       height: 52px; padding: 0 5%;
@@ -355,7 +355,7 @@
 
     /* ── TRUST BAR ── */
     .lp-trust {
-      background: #152a52; border-top: 1px solid rgba(255,255,255,0.05); padding: 18px 24px;
+      background: rgba(255,255,255,0.03); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 18px 24px;
     }
     .lp-trust-inner {
       max-width: 1000px; margin: 0 auto;
@@ -374,8 +374,8 @@
 
     /* ── STATS BAR ── */
     .lp-stats-bar {
-      background: #152a52; border-top: 1px solid rgba(255,255,255,0.05);
-      border-bottom: 2px solid rgba(255,255,255,0.03); padding: 0 24px;
+      background: rgba(255,255,255,0.03); border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 24px;
     }
     .lp-stats-bar-inner {
       max-width: 1000px; margin: 0 auto; display: flex; align-items: stretch;
@@ -395,7 +395,7 @@
     .lp-section { padding: 96px 24px; }
     .lp-section.light { background: var(--bg); }
     .lp-section.alt   { background: #F4F6F9; }
-    .lp-section.dark  { background: #1a3260; }
+    .lp-section.dark  { background: transparent; }
     .lp-section-inner { max-width: 1000px; margin: 0 auto; }
     .lp-eyebrow {
       font-size: 11px; font-weight: 700; letter-spacing: 2.5px;
@@ -677,7 +677,7 @@
 
     /* ── CTA SECTION ── */
     .lp-cta {
-      background: #1a3260; padding: 96px 24px 112px;
+      background: transparent; padding: 96px 24px 112px;
       text-align: center; position: relative; overflow: hidden;
     }
     .lp-cta::before {
