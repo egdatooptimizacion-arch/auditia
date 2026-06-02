@@ -1070,103 +1070,144 @@
     .btn-sm { padding: 10px 22px; font-size: 14px; }
 
     /* ── ONBOARDING ── */
-    #screen-onboarding { gap: 20px; background: var(--bg-alt); }
-    .onboard-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 36px; max-width: 520px; width: 100%;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    /* ── ONBOARDING ── */
+    #screen-onboarding {
+      gap: 0; padding: 0;
+      background: linear-gradient(160deg, #0F172A 0%, #1a3260 60%, #0F172A 100%);
+      min-height: 100vh;
+      align-items: center; justify-content: center;
     }
-    .onboard-card h2 { font-size: 22px; font-weight: 800; margin-bottom: 6px; color: var(--text); }
-    .onboard-card p { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
-    .field { margin-bottom: 20px; }
+    .onboard-wrap {
+      max-width: 520px; width: 100%; padding: 40px 20px;
+    }
+    .onboard-eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--green); margin-bottom: 12px;
+    }
+    .onboard-title {
+      font-size: 28px; font-weight: 900; color: #fff;
+      line-height: 1.2; margin-bottom: 8px;
+    }
+    .onboard-sub {
+      font-size: 15px; color: rgba(255,255,255,0.45);
+      margin-bottom: 32px; line-height: 1.5;
+    }
+    .onboard-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 28px; width: 100%;
+      backdrop-filter: blur(12px);
+    }
+    .onboard-card h2 { font-size: 16px; font-weight: 800; margin-bottom: 6px; color: #fff; }
+    .onboard-card p { color: rgba(255,255,255,0.45); font-size: 13px; margin-bottom: 20px; }
+    .field { margin-bottom: 16px; }
     .field label {
-      display: block; font-size: 12px; font-weight: 700; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;
+      display: block; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4);
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 7px;
     }
     .field input, .field select {
       width: 100%; padding: 12px 16px;
-      background: var(--bg); border: 1.5px solid var(--border);
-      border-radius: 10px; color: var(--text);
+      background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 10px; color: #fff;
       font-family: inherit; font-size: 15px; transition: border-color 0.2s;
     }
     .field input:focus, .field select:focus { outline: none; border-color: var(--green); }
-    .field select option { background: #fff; color: var(--text); }
-    .field input::placeholder { color: var(--muted-light); }
+    .field select option { background: #1a3260; color: #fff; }
+    .field input::placeholder { color: rgba(255,255,255,0.25); }
+    .onboard-divider {
+      display: flex; align-items: center; gap: 12px; margin: 20px 0;
+    }
+    .onboard-divider-line { flex:1; height:1px; background: rgba(255,255,255,0.1); }
+    .onboard-divider-text { font-size: 11px; color: rgba(255,255,255,0.25); font-weight: 600; white-space: nowrap; letter-spacing: 1px; }
 
     /* ── QUIZ ── */
-    #screen-quiz { justify-content: flex-start; padding-top: 56px; background: var(--bg-alt); }
-    .quiz-wrap { max-width: 620px; width: 100%; }
-
-    .progress-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
-    .progress-back {
-      background: var(--card); border: 1.5px solid var(--border);
-      border-radius: 50%; width: 36px; height: 36px;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--muted); cursor: pointer; font-size: 16px; transition: all 0.15s; flex-shrink: 0;
+    #screen-quiz {
+      justify-content: flex-start; padding-top: 72px; padding-bottom: 60px;
+      background: linear-gradient(160deg, #0F172A 0%, #1a3260 60%, #0F172A 100%);
+      min-height: 100vh;
     }
-    .progress-back:hover { border-color: var(--border-strong); color: var(--text); }
+    .quiz-wrap { max-width: 600px; width: 100%; padding: 0 20px; }
+
+    .progress-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+    .progress-back {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50%; width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.5); cursor: pointer; font-size: 16px; transition: all 0.15s; flex-shrink: 0;
+    }
+    .progress-back:hover { background: rgba(255,255,255,0.12); color: #fff; }
     .progress-info { flex: 1; }
     .progress-block {
       font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1px; color: var(--green-dark); margin-bottom: 6px;
+      letter-spacing: 1.5px; color: var(--green); margin-bottom: 8px;
     }
-    .progress-bar-wrap { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .progress-bar-wrap {
+      height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;
+    }
     .progress-bar-fill {
       height: 100%; background: var(--green);
-      border-radius: 3px; transition: width 0.4s ease;
+      border-radius: 2px; transition: width 0.4s ease;
     }
-    .progress-count { font-size: 13px; color: var(--muted); white-space: nowrap; font-weight: 600; }
+    .progress-count { font-size: 13px; color: rgba(255,255,255,0.35); white-space: nowrap; font-weight: 600; }
 
     .question-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 32px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-      animation: fadeSlide 0.25s ease;
+      background: #fff;
+      border-radius: 20px; padding: 36px 32px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.35), 0 4px 16px rgba(0,0,0,0.2);
+      animation: fadeSlide 0.3s ease;
     }
     @keyframes fadeSlide {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .question-num { font-size: 11px; font-weight: 700; color: var(--muted-light); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-    .question-text { font-size: 19px; font-weight: 700; line-height: 1.35; margin-bottom: 8px; color: var(--text); }
+    .question-num {
+      display: inline-block;
+      font-size: 11px; font-weight: 800; color: var(--green-dark);
+      background: var(--green-light); border-radius: 50px;
+      padding: 4px 12px; letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+    .question-text { font-size: 21px; font-weight: 800; line-height: 1.3; margin-bottom: 10px; color: var(--text); }
 
     .tooltip-trigger {
       display: inline-flex; align-items: center; gap: 6px;
-      font-size: 13px; color: var(--green-dark); cursor: pointer;
+      font-size: 12px; color: var(--muted); cursor: pointer;
       margin-bottom: 24px; background: none; border: none; padding: 0;
       font-family: inherit; font-weight: 500;
     }
-    .tooltip-trigger:hover { text-decoration: underline; }
+    .tooltip-trigger:hover { color: var(--green-dark); }
 
     .tooltip-box {
-      display: none; background: var(--green-light);
-      border: 1px solid #BBF7D0; border-radius: 10px;
-      padding: 14px 16px; margin-bottom: 20px;
-      font-size: 14px; color: #166534; line-height: 1.6;
+      display: none; background: #F0FDF4;
+      border-left: 3px solid var(--green); border-radius: 0 10px 10px 0;
+      padding: 12px 16px; margin-bottom: 20px;
+      font-size: 13px; color: #166534; line-height: 1.6;
       animation: fadeSlide 0.2s ease;
     }
     .tooltip-box.open { display: block; }
 
     .options { display: flex; flex-direction: column; gap: 10px; }
     .option {
-      display: flex; align-items: center; gap: 14px;
-      padding: 14px 18px;
-      background: var(--bg); border: 1.5px solid var(--border);
-      border-radius: 12px; cursor: pointer; transition: all 0.15s; text-align: left;
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px;
+      background: var(--bg); border: 2px solid var(--border);
+      border-radius: 14px; cursor: pointer; transition: all 0.15s; text-align: left;
     }
-    .option:hover { background: var(--card); border-color: var(--green); }
-    .option.selected { background: var(--green-light); border-color: var(--green); }
+    .option:hover { border-color: var(--green); background: var(--green-light); transform: translateX(3px); }
+    .option.selected {
+      background: var(--green-light); border-color: var(--green);
+      transform: translateX(3px);
+    }
     .option-dot {
-      width: 20px; height: 20px; border-radius: 50%;
+      width: 22px; height: 22px; border-radius: 50%;
       border: 2px solid var(--border-strong); flex-shrink: 0; transition: all 0.15s;
-      display: flex; align-items: center; justify-content: center; background: var(--card);
+      display: flex; align-items: center; justify-content: center; background: #fff;
     }
     .option.selected .option-dot { background: var(--green); border-color: var(--green); }
-    .option.selected .option-dot::after { content: '✓'; font-size: 11px; color: #fff; font-weight: 800; }
-    .option-label { font-size: 15px; font-weight: 600; color: var(--text); }
+    .option.selected .option-dot::after { content: '✓'; font-size: 12px; color: #fff; font-weight: 900; }
+    .option-label { font-size: 15px; font-weight: 700; color: var(--text); }
     .option-sublabel { font-size: 13px; color: var(--muted); margin-top: 2px; }
 
     .quiz-nav { display: flex; justify-content: flex-end; margin-top: 20px; }
@@ -1825,81 +1866,95 @@
 <!-- SCREEN 2 · ONBOARDING                        -->
 <!-- ════════════════════════════════════════════ -->
 <div id="screen-onboarding" class="screen">
-  <div class="onboard-card" style="max-width:540px;">
+  <div class="onboard-wrap">
+
+    <div class="onboard-eyebrow">AuditIA · Auditoría gratuita</div>
+    <h1 class="onboard-title">¿Te encuentra la IA<br>cuando buscan lo que vendes?</h1>
+    <p class="onboard-sub">Introduce tu web y descúbrelo en 3 minutos. Sin registro.</p>
 
     <!-- MODO IA AUTOMÁTICO -->
-    <div style="margin-bottom:28px; padding:22px; background:#F0FDF4; border:1.5px solid #BBF7D0; border-radius:16px;">
-      <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-        <span style="font-size:22px;">🤖</span>
-        <span style="font-weight:800; font-size:16px; color:#111827;">La IA analiza tu tienda sola</span>
-        <span style="background:#22C55E; color:#fff; font-size:10px; font-weight:700; padding:3px 8px; border-radius:50px;">NUEVO</span>
+    <div class="onboard-card" style="margin-bottom:12px;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+        <span style="font-size:18px;">🤖</span>
+        <h2>Análisis automático</h2>
+        <span style="margin-left:auto; background:var(--green); color:#fff; font-size:10px; font-weight:800; padding:3px 9px; border-radius:50px; letter-spacing:0.5px;">RECOMENDADO</span>
       </div>
-      <p style="font-size:13px; color:#6B7280; margin-bottom:16px; line-height:1.5;">
-        Introduce la URL y el agente analiza automáticamente el contenido, busca menciones externas y puntúa los 4 bloques. Sin responder preguntas.
-      </p>
+      <p>La IA analiza tu web sola. Sin responder preguntas.</p>
       <div style="display:flex; gap:10px;">
-        <input type="text" id="ai-url" placeholder="tutienda.com"
-          style="flex:1; padding:12px 16px; background:#fff; border:1.5px solid #BBF7D0; border-radius:10px; color:#111827; font-family:inherit; font-size:14px; outline:none;"
+        <input type="text" id="ai-url" placeholder="tunegocio.com"
+          style="flex:1; padding:12px 16px; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.15); border-radius:10px; color:#fff; font-family:inherit; font-size:14px; outline:none;"
           onkeydown="if(event.key==='Enter') startAiAnalysis()"
         />
         <button class="btn btn-primary btn-sm" onclick="startAiAnalysis()">Analizar →</button>
       </div>
     </div>
 
-    <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
-      <div style="flex:1; height:1px; background:#E5E7EB;"></div>
-      <span style="font-size:12px; color:#9CA3AF; font-weight:600; white-space:nowrap;">O RESPONDE TÚ LAS PREGUNTAS</span>
-      <div style="flex:1; height:1px; background:#E5E7EB;"></div>
+    <!-- DIVISOR -->
+    <div class="onboard-divider">
+      <div class="onboard-divider-line"></div>
+      <span class="onboard-divider-text">O RESPONDE TÚ LAS PREGUNTAS</span>
+      <div class="onboard-divider-line"></div>
     </div>
 
     <!-- MODO MANUAL -->
-    <h2 style="font-size:17px; margin-bottom:6px;">Auditoría manual</h2>
-    <p style="margin-bottom:20px; font-size:14px;">12 preguntas con tooltips explicativos. Útil si prefieres hacerlo tú.</p>
+    <div class="onboard-card">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+        <span style="font-size:18px;">📋</span>
+        <h2>Cuestionario manual</h2>
+      </div>
+      <p>8 preguntas sobre tu negocio. Resultado inmediato.</p>
 
-    <div class="field">
-      <label>URL de tu tienda (opcional)</label>
-      <input type="text" id="store-url" placeholder="ej: mitienda.com" autocomplete="off" />
-    </div>
-    <div class="field">
-      <label>Sector</label>
-      <select id="store-sector">
-        <option value="">Selecciona tu sector…</option>
-        <option value="Moda y calzado">Moda y calzado</option>
-        <option value="Alimentación y bebidas">Alimentación y bebidas</option>
-        <option value="Hogar y decoración">Hogar y decoración</option>
-        <option value="Salud y belleza">Salud y belleza</option>
-        <option value="Deportes y outdoor">Deportes y outdoor</option>
-        <option value="Electrónica y tecnología">Electrónica y tecnología</option>
-        <option value="Infantil y bebé">Infantil y bebé</option>
-        <option value="Mascotas">Mascotas</option>
-        <option value="Joyería y accesorios">Joyería y accesorios</option>
-        <option value="Jardinería">Jardinería</option>
-        <option value="Otro">Otro</option>
-      </select>
+      <div class="field">
+        <label>URL de tu negocio (opcional)</label>
+        <input type="text" id="store-url" placeholder="ej: tunegocio.com" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label>Sector</label>
+        <select id="store-sector">
+          <option value="">Selecciona tu sector…</option>
+          <option value="Moda y calzado">Moda y calzado</option>
+          <option value="Alimentación y bebidas">Alimentación y bebidas</option>
+          <option value="Hogar y decoración">Hogar y decoración</option>
+          <option value="Salud y belleza">Salud y belleza</option>
+          <option value="Deportes y outdoor">Deportes y outdoor</option>
+          <option value="Electrónica y tecnología">Electrónica y tecnología</option>
+          <option value="Infantil y bebé">Infantil y bebé</option>
+          <option value="Mascotas">Mascotas</option>
+          <option value="Joyería y accesorios">Joyería y accesorios</option>
+          <option value="Jardinería">Jardinería</option>
+          <option value="Restaurantes y hostelería">Restaurantes y hostelería</option>
+          <option value="Servicios profesionales">Servicios profesionales</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary" style="width:100%;" onclick="startQuiz()">
+        Empezar cuestionario →
+      </button>
     </div>
 
-    <button class="btn btn-secondary" style="width:100%;" onclick="startQuiz()">
-      Iniciar auditoría manual →
-    </button>
+    <div style="text-align:center; margin-top:16px;">
+      <button style="background:none; border:none; color:rgba(255,255,255,0.3); font-size:13px; cursor:pointer; font-family:inherit;" onclick="goTo('hero')">← Volver</button>
+    </div>
+
   </div>
-  <button class="btn btn-secondary btn-sm" style="margin-top:16px" onclick="goTo('hero')">← Volver</button>
 </div>
 
 <!-- ════════════════════════════════════════════ -->
 <!-- SCREEN 2.5 · ANALIZANDO (spinner IA)         -->
 <!-- ════════════════════════════════════════════ -->
-<div id="screen-analyzing" class="screen">
-  <div class="onboard-card" style="max-width:460px; text-align:center;">
-    <div style="font-size:48px; margin-bottom:20px; animation: pulse 2s infinite;">🤖</div>
-    <div style="font-weight:900; font-size:13px; letter-spacing:1.5px; color:var(--green); text-transform:uppercase; margin-bottom:6px;">AuditIA</div>
-    <h2 style="margin-bottom:12px;">Analizando tu visibilidad en IA</h2>
-    <p id="analyzing-status" style="font-size:14px; color:#6B7280; margin-bottom:28px; min-height:20px; line-height:1.5;">Iniciando análisis…</p>
+<div id="screen-analyzing" class="screen" style="background:linear-gradient(160deg,#0F172A 0%,#1a3260 60%,#0F172A 100%);">
+  <div style="max-width:440px; width:100%; padding:40px 20px; text-align:center;">
+    <div style="font-size:52px; margin-bottom:20px; animation: pulse 2s infinite;">🤖</div>
+    <div style="font-size:11px; font-weight:800; letter-spacing:2px; color:var(--green); text-transform:uppercase; margin-bottom:10px;">AuditIA</div>
+    <h2 style="font-size:24px; font-weight:900; color:#fff; margin-bottom:10px;">Analizando tu visibilidad</h2>
+    <p id="analyzing-status" style="font-size:14px; color:rgba(255,255,255,0.4); margin-bottom:32px; min-height:20px; line-height:1.5;">Iniciando análisis…</p>
 
-    <!-- Progress dots -->
-    <div style="display:flex; flex-direction:column; gap:10px; text-align:left; margin-bottom:28px;" id="analyzing-log"></div>
+    <!-- Log de pasos -->
+    <div style="display:flex; flex-direction:column; gap:8px; text-align:left; margin-bottom:28px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px;" id="analyzing-log"></div>
 
-    <!-- Spinner bar -->
-    <div style="height:4px; background:#E5E7EB; border-radius:2px; overflow:hidden;">
+    <!-- Barra de progreso -->
+    <div style="height:3px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden;">
       <div id="analyzing-bar" style="height:100%; width:0%; background:linear-gradient(90deg,#22C55E,#16A34A); border-radius:2px; transition:width 0.5s ease;"></div>
     </div>
   </div>
@@ -1936,22 +1991,30 @@
 <!-- ════════════════════════════════════════════ -->
 <!-- SCREEN 3.5 · EMAIL GATE                      -->
 <!-- ════════════════════════════════════════════ -->
-<div id="screen-email" class="screen">
-  <div class="onboard-card" style="max-width:480px; text-align:center;">
-    <div style="font-size:48px; margin-bottom:16px;">🎯</div>
-    <h2 style="margin-bottom:12px;">Tu diagnóstico está listo</h2>
-    <p style="color:var(--muted); font-size:14px; margin-bottom:24px; line-height:1.6;">
-      Introduce tu email para ver los resultados. Sin spam. Datos protegidos según RGPD.
+<div id="screen-email" class="screen" style="background:linear-gradient(160deg,#0F172A 0%,#1a3260 60%,#0F172A 100%);">
+  <div style="max-width:440px; width:100%; padding:40px 20px; text-align:center;">
+
+    <div style="width:64px; height:64px; background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.25); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; margin:0 auto 20px;">🎯</div>
+
+    <div style="font-size:11px; font-weight:800; letter-spacing:2px; color:var(--green); text-transform:uppercase; margin-bottom:10px;">Diagnóstico listo</div>
+    <h2 style="font-size:26px; font-weight:900; color:#fff; margin-bottom:10px; line-height:1.2;">Tu resultado está<br>esperándote</h2>
+    <p style="color:rgba(255,255,255,0.4); font-size:14px; margin-bottom:28px; line-height:1.6;">
+      Un email para ver los resultados.<br>Sin spam. Sin tarjeta.
     </p>
 
-    <div class="field" style="text-align:left;">
-      <label>Tu email</label>
-      <input type="email" id="email-address" placeholder="tu@email.com" autocomplete="email"/>
+    <div style="text-align:left; margin-bottom:16px;">
+      <label style="display:block; font-size:11px; font-weight:700; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; margin-bottom:7px;">Tu email</label>
+      <input type="email" id="email-address" placeholder="tu@email.com" autocomplete="email"
+        style="width:100%; padding:14px 18px; background:rgba(255,255,255,0.07); border:1.5px solid rgba(255,255,255,0.15); border-radius:12px; color:#fff; font-family:inherit; font-size:15px; outline:none; transition:border-color 0.2s;"
+        onfocus="this.style.borderColor='#22C55E'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'"
+        onkeydown="if(event.key==='Enter') submitEmail()"
+      />
     </div>
 
-    <button class="btn btn-primary" style="width:100%; margin-bottom:14px;" onclick="submitEmail()">
+    <button class="btn btn-primary" style="width:100%; padding:15px; font-size:16px; font-weight:800;" onclick="submitEmail()">
       Ver mi diagnóstico →
     </button>
+    <p style="font-size:11px; color:rgba(255,255,255,0.2); margin-top:12px;">RGPD · Nunca compartimos tu email</p>
   </div>
 </div>
 
