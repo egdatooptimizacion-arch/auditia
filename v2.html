@@ -123,7 +123,60 @@
     width: 6px; height: 6px;
     border-radius: 50%;
     background: var(--green);
+    box-shadow: 0 0 0 0 var(--green);
+    animation: pulseDot 2s infinite;
   }
+  @keyframes pulseDot {
+    0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.6); }
+    70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+    100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+  }
+
+  /* FADE IN ON SCROLL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-1 { transition-delay: 0.05s; }
+  .reveal-2 { transition-delay: 0.12s; }
+  .reveal-3 { transition-delay: 0.18s; }
+  .reveal-4 { transition-delay: 0.24s; }
+
+  /* MARQUEE */
+  .marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 64px;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+    align-items: center;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* LIVE TICK on dashboard metrics */
+  @keyframes flick {
+    0%, 90%, 100% { opacity: 1; }
+    92% { opacity: 0.4; }
+    94% { opacity: 1; }
+  }
+  .dash-metric .v { animation: flick 6s infinite; }
+  .dash-metric:nth-child(2) .v { animation-delay: 1.2s; }
+  .dash-metric:nth-child(3) .v { animation-delay: 2.4s; }
+  .dash-metric:nth-child(4) .v { animation-delay: 3.6s; }
+  .dash-metric:nth-child(5) .v { animation-delay: 4.8s; }
+  .dash-metric:nth-child(6) .v { animation-delay: 1.8s; }
 
   .hero h1 {
     font-size: clamp(2.4rem, 5.5vw, 4rem);
@@ -673,16 +726,40 @@
 
 <!-- TRUST -->
 <section class="trust">
-  <div class="container">
-    <div class="trust-inner">
-      <span class="trust-label">DATOS DE</span>
-      <div class="trust-items">
-        <span class="trust-item">ChatGPT</span>
-        <span class="trust-item">Perplexity</span>
-        <span class="trust-item">Gemini</span>
-        <span class="trust-item">Claude</span>
-        <span class="trust-item">Google AI</span>
-      </div>
+  <div style="margin-bottom: 18px; text-align:center;">
+    <span class="trust-label">DATOS EN TIEMPO REAL DE</span>
+  </div>
+  <div class="marquee">
+    <div class="marquee-track">
+      <span class="trust-item">ChatGPT</span>
+      <span class="trust-item">·</span>
+      <span class="trust-item">Perplexity</span>
+      <span class="trust-item">·</span>
+      <span class="trust-item">Gemini</span>
+      <span class="trust-item">·</span>
+      <span class="trust-item">Claude</span>
+      <span class="trust-item">·</span>
+      <span class="trust-item">Google AI Overviews</span>
+      <span class="trust-item">·</span>
+      <span class="trust-item">Microsoft Copilot</span>
+      <span class="trust-item">·</span>
+      <span class="trust-item">You.com</span>
+      <span class="trust-item">·</span>
+      <!-- duplicado para loop -->
+      <span class="trust-item">ChatGPT</span>
+      <span class="trust-item">·</span>
+      <span class="trust-item">Perplexity</span>
+      <span class="trust-item">·</span>
+      <span class="trust-item">Gemini</span>
+      <span class="trust-item">·</span>
+      <span class="trust-item">Claude</span>
+      <span class="trust-item">·</span>
+      <span class="trust-item">Google AI Overviews</span>
+      <span class="trust-item">·</span>
+      <span class="trust-item">Microsoft Copilot</span>
+      <span class="trust-item">·</span>
+      <span class="trust-item">You.com</span>
+      <span class="trust-item">·</span>
     </div>
   </div>
 </section>
@@ -697,22 +774,22 @@
     </div>
 
     <div class="stats-grid">
-      <div class="stat-card">
+      <div class="stat-card reveal reveal-1">
         <div class="label">USUARIOS</div>
-        <div class="big">900M</div>
+        <div class="big"><span data-count="900" data-suffix="M">0M</span></div>
         <div class="desc">Usuarios semanales de ChatGPT. Mismo orden que Google búsquedas a nivel global.</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card reveal reveal-2">
         <div class="label">CLICS</div>
-        <div class="big">−40%</div>
+        <div class="big"><span data-count="40" data-prefix="−" data-suffix="%">0%</span></div>
         <div class="desc">Menos clics en resultados orgánicos tras Google AI Overviews.</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card reveal reveal-3">
         <div class="label">VISIBILIDAD</div>
-        <div class="big">16%</div>
+        <div class="big"><span data-count="16" data-suffix="%">0%</span></div>
         <div class="desc">Solo 1 de cada 6 marketers sabe medir su visibilidad en IA. El resto opera a ciegas.</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card reveal reveal-4">
         <div class="label">CONFIANZA</div>
         <div class="big">3/4</div>
         <div class="desc">Usuarios de IA que no verifican otras fuentes. Si no apareces, no existes.</div>
@@ -731,7 +808,7 @@
     </div>
 
     <div class="steps">
-      <div class="step">
+      <div class="step reveal reveal-1">
         <div class="step-num">01 / RASTREO</div>
         <div class="step-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/></svg>
@@ -740,7 +817,7 @@
         <p>Preguntas directas a ChatGPT, Perplexity, Gemini y Claude sobre tu nicho. Sin prompts inventados. Comportamiento de consumidor real.</p>
       </div>
 
-      <div class="step">
+      <div class="step reveal reveal-2">
         <div class="step-num">02 / MEDICIÓN</div>
         <div class="step-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 14l4-4 4 4 5-5"/></svg>
@@ -749,7 +826,7 @@
         <p>Seis KPIs medibles y comparables: aparición, posición, cuota de voz, profundidad conversacional, cobertura e integridad.</p>
       </div>
 
-      <div class="step">
+      <div class="step reveal reveal-3">
         <div class="step-num">03 / PLAN</div>
         <div class="step-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
@@ -895,5 +972,48 @@
   </div>
 </footer>
 
+<script>
+// ─── Fade-in on scroll ───
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ─── Counter animation ───
+function animateCount(el, target, duration = 1600, suffix = '', prefix = '') {
+  const start = performance.now();
+  const isFloat = String(target).includes('.');
+  const startValue = 0;
+  const easeOut = t => 1 - Math.pow(1 - t, 3);
+
+  function tick(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const v = startValue + (target - startValue) * easeOut(t);
+    el.textContent = prefix + (isFloat ? v.toFixed(1) : Math.round(v).toLocaleString('es-ES')) + suffix;
+    if (t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+const countObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !e.target.dataset.done) {
+      e.target.dataset.done = '1';
+      const target = parseFloat(e.target.dataset.count);
+      const suffix = e.target.dataset.suffix || '';
+      const prefix = e.target.dataset.prefix || '';
+      animateCount(e.target, target, 1500, suffix, prefix);
+    }
+  });
+}, { threshold: 0.4 });
+
+document.querySelectorAll('[data-count]').forEach(el => countObserver.observe(el));
+</script>
 </body>
 </html>
