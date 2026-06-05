@@ -294,6 +294,64 @@
     font-family: 'JetBrains Mono', monospace;
   }
 
+  /* SCANNING BAR */
+  .scan-bar {
+    height: 2px;
+    background: var(--bg-2);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 14px;
+    position: relative;
+  }
+  .scan-bar::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -30%;
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    animation: scan 2.5s ease-in-out infinite;
+  }
+  @keyframes scan {
+    to { left: 100%; }
+  }
+  .dash-metric .v {
+    transition: opacity 0.4s, color 0.4s;
+  }
+  .dash-metric.changing .v {
+    opacity: 0;
+  }
+  .hero-dash-head .brand {
+    transition: opacity 0.4s;
+  }
+  .hero-dash-head.changing .brand,
+  .hero-dash-head.changing .score {
+    opacity: 0.2;
+  }
+  .hero-dash-head .score {
+    transition: opacity 0.4s;
+  }
+  .live-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--green);
+    background: var(--green-soft);
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .live-pill .dot {
+    width: 5px; height: 5px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulseDot 1.5s infinite;
+  }
+
   /* TRUST */
   .trust {
     padding: 32px 0;
@@ -775,47 +833,25 @@
         </div>
       </div>
 
-      <!-- DASHBOARD MOCK -->
-      <div class="hero-dash">
-        <div class="hero-dash-head">
+      <!-- DASHBOARD MOCK · LIVE -->
+      <div class="hero-dash" id="liveDash">
+        <span class="live-pill"><span class="dot"></span>EN VIVO · AUDITORÍA</span>
+        <div class="hero-dash-head" id="dashHead">
           <div>
-            <div class="brand">Estanterías Vinilo Pro</div>
-            <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-3); margin-top:3px; letter-spacing:0.5px;">SHOPIFY · MUEBLES</div>
+            <div class="brand" id="dashBrand">Estanterías Vinilo Pro</div>
+            <div id="dashMeta" style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-3); margin-top:3px; letter-spacing:0.5px;">SHOPIFY · MUEBLES</div>
           </div>
-          <div class="score">GEO 4.2/10</div>
+          <div class="score" id="dashScore">GEO 4.2/10</div>
         </div>
-        <div class="dash-metrics">
-          <div class="dash-metric">
-            <div class="label">APARICIÓN</div>
-            <div class="v warn">18%</div>
-            <div class="ch">de 100 prompts</div>
-          </div>
-          <div class="dash-metric">
-            <div class="label">POSICIÓN</div>
-            <div class="v warn">4ª</div>
-            <div class="ch">media</div>
-          </div>
-          <div class="dash-metric">
-            <div class="label">CUOTA VOZ</div>
-            <div class="v danger">7%</div>
-            <div class="ch">vs líder 28%</div>
-          </div>
-          <div class="dash-metric">
-            <div class="label">TURNO</div>
-            <div class="v warn">3</div>
-            <div class="ch">conversación</div>
-          </div>
-          <div class="dash-metric">
-            <div class="label">COBERTURA</div>
-            <div class="v warn">2/4</div>
-            <div class="ch">plataformas</div>
-          </div>
-          <div class="dash-metric">
-            <div class="label">INTEGRIDAD</div>
-            <div class="v warn">67%</div>
-            <div class="ch">datos correctos</div>
-          </div>
+        <div class="dash-metrics" id="dashMetrics">
+          <div class="dash-metric"><div class="label">APARICIÓN</div><div class="v" data-key="aparicion">18%</div><div class="ch">de 100 prompts</div></div>
+          <div class="dash-metric"><div class="label">POSICIÓN</div><div class="v" data-key="posicion">4ª</div><div class="ch">media</div></div>
+          <div class="dash-metric"><div class="label">CUOTA VOZ</div><div class="v" data-key="cuota">7%</div><div class="ch" data-key="cuotaCh">vs líder 28%</div></div>
+          <div class="dash-metric"><div class="label">TURNO</div><div class="v" data-key="turno">3</div><div class="ch">conversación</div></div>
+          <div class="dash-metric"><div class="label">COBERTURA</div><div class="v" data-key="cobertura">2/4</div><div class="ch">plataformas</div></div>
+          <div class="dash-metric"><div class="label">INTEGRIDAD</div><div class="v" data-key="integridad">67%</div><div class="ch">datos correctos</div></div>
         </div>
+        <div class="scan-bar"></div>
       </div>
     </div>
   </div>
@@ -1180,6 +1216,110 @@ tabs.forEach(tab => {
     panes[idx].classList.add('active');
   });
 });
+
+// ─── LIVE DASHBOARD · auto rotation ───
+const dashStates = [
+  {
+    brand: 'Estanterías Vinilo Pro',
+    meta: 'SHOPIFY · MUEBLES',
+    score: 'GEO 4.2/10',
+    scoreClass: 'warn',
+    metrics: {
+      aparicion: { v: '18%', c: 'warn' },
+      posicion:  { v: '4ª', c: 'warn' },
+      cuota:     { v: '7%', c: 'danger' },
+      cuotaCh:   'vs líder 28%',
+      turno:     { v: '3', c: 'warn' },
+      cobertura: { v: '2/4', c: 'warn' },
+      integridad:{ v: '67%', c: 'warn' }
+    }
+  },
+  {
+    brand: 'La Despensa de Lola',
+    meta: 'RESTAURANTE · MADRID',
+    score: 'GEO 6.1/10',
+    scoreClass: 'warn',
+    metrics: {
+      aparicion: { v: '42%', c: 'green' },
+      posicion:  { v: '2ª', c: 'warn' },
+      cuota:     { v: '14%', c: 'warn' },
+      cuotaCh:   'vs líder 22%',
+      turno:     { v: '1', c: 'green' },
+      cobertura: { v: '3/4', c: 'warn' },
+      integridad:{ v: '81%', c: 'green' }
+    }
+  },
+  {
+    brand: 'Hera & Lino · Slow Fashion',
+    meta: 'E-COMMERCE · MODA',
+    score: 'GEO 2.8/10',
+    scoreClass: 'danger',
+    metrics: {
+      aparicion: { v: '6%', c: 'danger' },
+      posicion:  { v: '7ª', c: 'danger' },
+      cuota:     { v: '2%', c: 'danger' },
+      cuotaCh:   'vs líder 38%',
+      turno:     { v: '5', c: 'danger' },
+      cobertura: { v: '1/4', c: 'danger' },
+      integridad:{ v: '54%', c: 'warn' }
+    }
+  }
+];
+
+const scoreColor = { warn: 'var(--warn)', danger: 'var(--danger)', green: 'var(--green)' };
+let dashIdx = 0;
+const head = document.getElementById('dashHead');
+const brandEl = document.getElementById('dashBrand');
+const metaEl = document.getElementById('dashMeta');
+const scoreEl = document.getElementById('dashScore');
+const metricsEl = document.getElementById('dashMetrics');
+const metricEls = metricsEl.querySelectorAll('.dash-metric');
+
+function applyState(s) {
+  brandEl.textContent = s.brand;
+  metaEl.textContent = s.meta;
+  scoreEl.textContent = s.score;
+  // Apply score background based on level
+  if (s.scoreClass === 'danger') {
+    scoreEl.style.background = 'rgba(248,113,113,0.12)';
+    scoreEl.style.color = 'var(--danger)';
+  } else if (s.scoreClass === 'warn') {
+    scoreEl.style.background = 'rgba(251,191,36,0.12)';
+    scoreEl.style.color = 'var(--warn)';
+  } else {
+    scoreEl.style.background = 'var(--green-soft)';
+    scoreEl.style.color = 'var(--green)';
+  }
+  // Update metrics
+  const keys = ['aparicion','posicion','cuota','turno','cobertura','integridad'];
+  metricEls.forEach((m, i) => {
+    const k = keys[i];
+    const data = s.metrics[k];
+    const vEl = m.querySelector('[data-key="' + k + '"]');
+    vEl.textContent = data.v;
+    vEl.className = 'v';
+    vEl.style.color = scoreColor[data.c];
+  });
+  // Update cuotaCh text
+  const cuotaChEl = metricsEl.querySelector('[data-key="cuotaCh"]');
+  if (cuotaChEl) cuotaChEl.textContent = s.metrics.cuotaCh;
+}
+
+function rotateDash() {
+  // Trigger fade out
+  head.classList.add('changing');
+  metricEls.forEach(m => m.classList.add('changing'));
+  setTimeout(() => {
+    dashIdx = (dashIdx + 1) % dashStates.length;
+    applyState(dashStates[dashIdx]);
+    head.classList.remove('changing');
+    metricEls.forEach(m => m.classList.remove('changing'));
+  }, 400);
+}
+
+// Apply first state and start rotation
+applyState(dashStates[0]);
+setInterval(rotateDash, 4500);
 </script>
 </body>
 </html>
